@@ -1,0 +1,5 @@
+FROM centos:8
+
+RUN yum install -y npm python3
+RUN yum update -y libarchive
+

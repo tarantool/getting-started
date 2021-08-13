@@ -1,0 +1,20 @@
+---
+try-cartridge.router:
+  advertise_uri: localhost:3301
+  http_port: 8081
+
+try-cartridge.s1-master:
+  advertise_uri: localhost:3302
+  http_port: 8082
+
+try-cartridge.s1-replica:
+  advertise_uri: localhost:3303
+  http_port: 8083
+
+try-cartridge.s2-master:
+  advertise_uri: localhost:3304
+  http_port: 8084
+
+try-cartridge.s2-replica:
+  advertise_uri: localhost:3305
+  http_port: 8085
