@@ -1,5 +1,6 @@
 // @flow
 import { updateImagesPaths } from './splitMarkdown';
+import{ type TutorialLang } from './detectLang';
 
 const prefix = process.env.REACT_APP_MD_URL || '';
 
@@ -16,6 +17,6 @@ const loadMDFile = (fileName: string) =>
     })
     .then(text => updateImagesPaths(text, prefix));
 
-export const loadTutorialContent = () => loadMDFile('index.md');
+export const loadTutorialContent = (lang: TutorialLang) => loadMDFile(lang + '/index.md');
 
-export const loadPopupContent = () => loadMDFile('popup.md');
+export const loadPopupContent = (lang: TutorialLang) => loadMDFile(lang + '/popup.md');
