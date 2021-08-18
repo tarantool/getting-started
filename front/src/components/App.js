@@ -11,20 +11,23 @@ import {
   SectionPreloader,
   Text
 } from '@tarantool.io/ui-kit';
+import { detectLang, type TutorialLang } from '../fn/detectLang';
 import { type ParsedSections } from '../fn/splitMarkdown';
 import { getScrollableParent } from '../fn/getScrollableParent';
+import { LangSelect } from '../components/LangSelect';
 import { TutorialLayout } from '../components/TutorialLayout';
 import { WelcomePopup } from '../components/WelcomePopup';
 import { PROJECT_NAME } from '../constants';
 import { $tutorial, sectionsErrorModalClose } from '../store';
 
-const projectPath = path => `/${PROJECT_NAME}/${path}`;
+const projectPath = (lang: string, path: string) => `/${PROJECT_NAME}/${lang}/${path}`;
 const { components: { AppTitle }, history } = window.tarantool_enterprise_core;
 
 type Props = {
   location: Location,
   tutorialSections?: ParsedSections,
   tutorialSectionsLoding: bool,
+  currentLanguage?: TutorialLang,
   currentSection?: string,
   tutorialSectionsError: string | null
 };
@@ -43,6 +46,7 @@ export class App extends React.Component<Props> {
 
   render() {
     const {
+      currentLanguage,
       currentSection,
       tutorialSections,
       tutorialSectionsError,
@@ -67,46 +71,48 @@ export class App extends React.Component<Props> {
 
     return tutorialSections
       ? (
-        <PageLayoutWithRef heading='Tutorial' ref={this.pageLayoutRef}>
-          <AppTitle title='Tutorial' />
-          <WelcomePopup />
-          <Router history={history}>
+        <Router history={history}>
+          <PageLayoutWithRef heading='Tutorial' topRightControls={[<LangSelect />]} ref={this.pageLayoutRef}>
+            <AppTitle title='Tutorial' />
+            <WelcomePopup />
             <Switch>
-              <Route
-                path={projectPath(':sectionId')}
-                render={({ match: { params: { sectionId } } }) => {
-                  const sectionIndex = tutorialSections.findIndex(
-                    ({ id }) => id === sectionId
-                  );
-
-                  if (sectionIndex === -1) {
-                    return (
-                      <Redirect
-                        to={projectPath(tutorialSections[0].id)}
-                        push={false}
-                      />
+              {currentLanguage && (
+                <Route
+                  path={projectPath(currentLanguage, ':sectionId')}
+                  render={({ match: { params: { sectionId } } }) => {
+                    const sectionIndex = tutorialSections.findIndex(
+                      ({ id }) => id === sectionId
                     );
-                  }
 
-                  return (
-                    <TutorialLayout
-                      sections={tutorialSections}
-                      selectedSection={parseInt(sectionIndex, 10)}
-                    />
-                  )
-                }}
-              />
+                    if (sectionIndex === -1) {
+                      return (
+                        <Redirect
+                          to={projectPath(currentLanguage, tutorialSections[0].id)}
+                          push={false}
+                        />
+                      );
+                    }
+
+                    return (
+                      <TutorialLayout
+                        sections={tutorialSections}
+                        selectedSection={parseInt(sectionIndex, 10)}
+                      />
+                    )
+                  }}
+                />
+              )}
               <Route
                 render={() => (
                   <Redirect
-                    to={projectPath(currentSection || tutorialSections[0].id)}
+                    to={projectPath(currentLanguage || detectLang(), currentSection || tutorialSections[0].id)}
                     push={false}
                   />
                 )}
               />
             </Switch>
-          </Router>
-        </PageLayoutWithRef>
+          </PageLayoutWithRef>
+        </Router>
       )
       : 'Fail'
   }

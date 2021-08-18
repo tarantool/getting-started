@@ -5,23 +5,21 @@ import { SVGImage } from '@tarantool.io/ui-kit';
 import { ConnectedApp } from './components/App';
 import menuIcon from './menu-icon.svg';
 import { PROJECT_NAME } from './constants';
-import { sectionChange, loadTutorialFx } from './store';
+import { sectionChange } from './store';
 
 const projectPath = path => `/${PROJECT_NAME}/${path}`;
 const { tarantool_enterprise_core } = window;
 
-loadTutorialFx();
-
 tarantool_enterprise_core.history.listen(
   ({ pathname }) => {
     const match = matchPath(pathname, {
-      path: `/${PROJECT_NAME}/:sectionId`,
+      path: `/${PROJECT_NAME}/:langId/:sectionId`,
       exact: true,
       strict: false
     })
 
     if (match && match.params) {
-      sectionChange(match.params.sectionId)
+      sectionChange([match.params.langId, match.params.sectionId])
     }
   }
 );
