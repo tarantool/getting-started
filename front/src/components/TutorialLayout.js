@@ -4,6 +4,7 @@ import React from 'react';
 import type { ParsedSections } from '../fn/splitMarkdown';
 import { TutorialSection } from './TutorialSection';
 import { TutorialNav } from './TutorialNav';
+import { saveDataToAnalytics } from '../store';
 
 const { AppTitle } = window.tarantool_enterprise_core.components;
 
@@ -32,18 +33,23 @@ type Props = {
 
 export const TutorialLayout = (
   { className, sections, selectedSection }: Props
-) => (
-  <div className={cx(styles.wrap, className)}>
-    <AppTitle title={sections[selectedSection].h2} />
-    <TutorialSection
-      className={cx(styles.section, className)}
-      sections={sections}
-      selectedSection={selectedSection}
-    />
-    <TutorialNav
-      className={styles.contentsTable}
-      sections={sections}
-      selectedSection={selectedSection}
-    />
-  </div>
-);
+) => {
+  React.useEffect(() => {
+    saveDataToAnalytics();
+  }, [ selectedSection ]);
+  return (
+    <div className={cx(styles.wrap, className)}>
+      <AppTitle title={sections[selectedSection].h2} />
+      <TutorialSection
+        className={cx(styles.section, className)}
+        sections={sections}
+        selectedSection={selectedSection}
+      />
+      <TutorialNav
+        className={styles.contentsTable}
+        sections={sections}
+        selectedSection={selectedSection}
+      />
+    </div>
+  )
+};

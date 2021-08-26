@@ -4,12 +4,9 @@ import { connect } from 'effector-react';
 import { Router, Switch, Route, Redirect } from 'react-router-dom';
 import type { Location } from 'react-router';
 import {
-  Button,
-  Modal,
   PageLayoutWithRef,
   SplashErrorNetwork,
-  SectionPreloader,
-  Text
+  SectionPreloader
 } from '@tarantool.io/ui-kit';
 import { detectLang, type TutorialLang } from '../fn/detectLang';
 import { type ParsedSections } from '../fn/splitMarkdown';
@@ -18,7 +15,7 @@ import { LangSelect } from '../components/LangSelect';
 import { TutorialLayout } from '../components/TutorialLayout';
 import { WelcomePopup } from '../components/WelcomePopup';
 import { PROJECT_NAME } from '../constants';
-import { $tutorial, sectionsErrorModalClose } from '../store';
+import { $tutorial } from '../store';
 
 const projectPath = (lang: string, path: string) => `/${PROJECT_NAME}/${lang}/${path}`;
 const { components: { AppTitle }, history } = window.tarantool_enterprise_core;

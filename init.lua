@@ -19,7 +19,7 @@ local ok, err = cartridge.cfg({
 })
 
 front.add('analytics_static', analytics.static_bundle)
-front.add('ga', analytics.use_bundle({ ga = '71738660-1' }))
+front.add('ga', analytics.use_bundle({ ga = '22120502-2' }))
 
 front.add('tutorial', tutorial_bundle)
 

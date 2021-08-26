@@ -29,11 +29,21 @@ export const sectionChange = createEvent<[TutorialLang, string]>('Changing tutor
 export const welcomeModalClose = createEvent<mixed>();
 export const sectionsErrorModalClose = createEvent<mixed>();
 export const setLanguage = createEvent<TutorialLang>();
+export const saveDataToAnalytics = createEvent<void>();
 
 export const $welcomeModal = combine({
   state: $welcomeModalState,
   content: $welcomeModalContent
 });
+
+const analyticsFx = createEffect(section => {
+  const pageviewEvent = {
+    type: 'pageview',
+    url: window.location.pathname
+  };
+  window.tarantool_enterprise_core.analyticModule.sendEvent(pageviewEvent);
+});
+
 
 export const $tutorial = combine({
   currentLanguage: $currentLanguage,
@@ -119,3 +129,8 @@ guard<TutorialLang | null>({
 forward({ from: setLanguage, to: storeLanguageFx });
 
 detectLangFx();
+
+forward({
+  from: saveDataToAnalytics,
+  to: analyticsFx
+});
