@@ -24,4 +24,7 @@ front.add('ga', analytics.use_bundle({ ga = '22120502-2' }))
 
 front.add('tutorial', tutorial_bundle)
 
+local auth = require('app.auth')
+auth.init()
+
 assert(ok, tostring(err))
