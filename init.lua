@@ -15,7 +15,8 @@ local ok, err = cartridge.cfg({
         'extensions',
         'cartridge.roles.crud-router',
         'cartridge.roles.crud-storage',
-    }
+    },
+    cluster_cookie = 'try-cartridge-cluster-cookie'
 })
 
 front.add('analytics_static', analytics.static_bundle)

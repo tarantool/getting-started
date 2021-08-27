@@ -1,4 +1,7 @@
 ---
+default:
+  feedback_enabled: false
+
 try-cartridge.router:
   advertise_uri: localhost:3301
   http_port: 8081
