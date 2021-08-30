@@ -15,6 +15,7 @@ local ok, err = cartridge.cfg({
         'extensions',
         'cartridge.roles.crud-router',
         'cartridge.roles.crud-storage',
+        'space-explorer',
     },
     cluster_cookie = 'try-cartridge-cluster-cookie'
 })

@@ -12,6 +12,7 @@ dependencies = {
     'analytics == scm-1',
     'cartridge-extensions == scm-1',
     'crud == 0.8.0',
+    'space-explorer == 1.1.3-1'
 }
 
 build = {
