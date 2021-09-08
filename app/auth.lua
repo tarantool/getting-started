@@ -7,7 +7,7 @@ local httpd = require('app.libs.httpd').httpd
 local function init()
     local is_enabled = helper.read_args({ jwt_auth = 'boolean' })['jwt_auth'] or false
     if not is_enabled then
-        return
+        return nil
     end
 
     local public_key = helper.read_args({ public_key = 'string' }, true).public_key
