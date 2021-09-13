@@ -238,6 +238,11 @@ Check that everything is in place and move on.
 
 ![Space Explorer, viewing likes](images/likes.png)
 
+Please note: the `space-explorer` tool is only available in the Enterprise version of the product.
+In the open-source version, the data can be viewed through the console.
+
+Read [more in the documentation] (https://www.tarantool.io/en/doc/latest/reference/reference_lua/box_space/select/).
+
 ## Scaling the Cluster [1 minute]
 
 Create a second shard. Go to the Cluster tab, select `s2-master`, and click Configure. Select the roles as shown in the picture:
