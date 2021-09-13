@@ -41,3 +41,22 @@ tarantool_enterprise_core.register(
   'react',
   null
 );
+
+
+(function() {
+  var id='3939b3f2jxr6jjtxhvp86csrxyuxz9gucr3';
+  var js=document.createElement('script');
+  js.setAttribute('type','text/javascript');
+  js.setAttribute('src','//deploy.mopinion.com/js/pastease.js');
+  js.async=true;document.getElementsByTagName('head')[0].appendChild(js);
+  var t=setInterval(
+    function(){
+      try{
+        window.Pastease.load(id);
+        clearInterval(t)
+      } catch(e) {
+
+      }
+    },50
+  )
+})();

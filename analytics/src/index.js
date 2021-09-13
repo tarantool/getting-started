@@ -47,12 +47,14 @@ window.__analytics_module__ = ({ type: analyticsType, key, options }) => {
   }, 100)
   switch(analyticsType) {
     case 'ga': {
-      loadGoogle()
-      let cookieSettings = 'auto'
+      loadGoogle();
+      let cookieSettings = 'auto';
       if (options && options.cookie_domain) {
         cookieSettings = { cookieDomain: options.cookie_domain }
       }
-      window.ga('create', `UA-${key}`, cookieSettings);
+      window.ga('create', `UA-${key}`, cookieSettings, { allowLinker: true });
+      window.ga('require', 'linker');
+      window.ga('linker:autoLink', ['tarantool.io'] );
       window.ga('send', 'pageview');
       break;
     }
