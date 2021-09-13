@@ -53,7 +53,10 @@ You will need to store:
 
 - users
 - videos and their descriptions, with a pre-calculated number of likes
-- **actual likes**
+- actual likes
+
+**Create a `schema.yml` file to load the schema into the cluster. Copy and paste
+schema to this file. Click on the "Apply" button. After that, the data schema will be described in the cluster.**
 
 The data schema will look like this:
 
@@ -151,7 +154,6 @@ More interesting facts:
 - The `parts` field in the index definition can contain several fields in order to build a composite (multi-part) index. You won't need it in this tutorial.
 - Tarantool does not support foreign keys, so you have to check manually that `video_id` and `user_id` exist in the `likes` space.
 
-**Great! Let's apply the schema** to the whole cluster. Go to the Schema tab in the cluster, copy the schema into the field, and click Apply. Done. The same data schema gets applied to all the nodes.
 
 ## Writing Data [5 minutes]
 
@@ -164,6 +166,11 @@ Plug the CRUD module and declare three procedures:
 - creating a user
 - adding a video
 - liking a video
+
+**The procedures must be described in a special file. To do this, go to the "Code" tab. Create
+a new directory called "extensions". And in this directory create the file "api.yml".**
+
+Paste the code described below into this file and click on the "Apply" button.
 
 ```lua
 local cartridge = require('cartridge')
@@ -219,7 +226,10 @@ For simplicity, `update` and `insert_object` operations in the `like_video` meth
 
 ## Setting up HTTP API [2 minutes]
 
-Clients will connect to the Tarantool cluster via the HTTP protocol. The cluster already has its own built-in HTTP server. Configure the paths:
+Clients will connect to the Tarantool cluster via the HTTP protocol. The cluster already has its own built-in HTTP server.
+
+**To configure HTTP paths, you need to write a configuration file. To do this, go to the "Code" tab. Create
+the "config.yml" file in the "extensions" directory. You created it in the last step.**
 
 ```lua
 local function init(opts)
@@ -259,7 +269,7 @@ Check that everything is in place and move on.
 Please note: the `space-explorer` tool is only available in the Enterprise version of the product.
 In the open-source version, the data can be viewed through the console.
 
-Read [more in the documentation] (https://www.tarantool.io/en/doc/latest/reference/reference_lua/box_space/select/).
+Read [more in the documentation](https://www.tarantool.io/en/doc/latest/reference/reference_lua/box_space/select/).
 
 ## Scaling the Cluster [1 minute]
 
@@ -340,7 +350,7 @@ Done! You can see the Tarantool Cartridge UI at [http://localhost:8081](http://l
 
 Use a Docker container with СentOS 8 or WSL and follow the Linux installation instructions.
 
-### See also
+## See also
 
 - [Study the Tarantool Cartridge documentation](https://www.tarantool.io/ru/doc/latest/book/cartridge/) and create your own distributed application
 - Explore the repository [tarantool/examples](https://github.com/tarantool/examples) on Github with ready-made examples on Tarantool Cartridge: cache, MySQL replicator, and others.
