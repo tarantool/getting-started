@@ -1,4 +1,4 @@
-# [Tutorial] Developers
+## Prerequisites
 
 Today you are going to solve a high-performance challenge for TikTok with Tarantool.
 
@@ -6,7 +6,10 @@ You will implement a counter of likes for videos. First, you will create base ta
 
 If you accidentally do something wrong while following the instructions, there is a magic button that helps you reset all the changes.
 
-It is called **Reset Configuration**. You can find it in the upper right corner.
+It is called **Reset Configuration**. You can find it at the top of the "Cluster" page.
+
+
+## Configuring a Cluster
 
 **Everything you need to know to get started:**
 
@@ -15,15 +18,30 @@ A Tarantool cluster has two service roles: Router and Storage.
 - Storage is used to store the data
 - Router is an intermediary between clients and storages. It accepts a client's request, takes data from the proper storage, and returns it to the client.
 
-## Configuring a Cluster
+On the "Cluster" tab, we see that we have 5
+unconfigured instances.
 
-On the Cluster tab, you can see that you have five unconfigured instances. For a start, create a router and a storage.
+![List of all hosts](images/hosts-list.png)
 
-...
+Let's create one Router and one Storage for
+start.
 
-Enable sharding.
+First, click the "Configure" button on the "router" instance and configure it
+as in the screenshot below:
 
-...
+![Configuring router](images/router-configuration.png)
+
+Next, we configure the "s1-master" instance:
+
+![Configuring s1-master](images/storage-configuration.png)
+
+It will look something like this:
+
+![Cluster view after first configuration](images/first-configuration-result.png)
+
+Let's enable sharding in the cluster using the "Bootstrap vshard" button.
+It is located on the top right.
+
 
 ## Creating a Data Schema [2 minutes]
 
