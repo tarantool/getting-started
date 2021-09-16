@@ -10,15 +10,29 @@ local tutorial_bundle = require('cartridge-app.bundle')
 local clock = require('clock')
 local json = require('json')
 
+local ENTERPRISE = 'Enterprise'
+
+local roles = {
+    'cartridge.roles.vshard-router',
+    'cartridge.roles.vshard-storage',
+    'extensions',
+    'cartridge.roles.crud-router',
+    'cartridge.roles.crud-storage',
+}
+
+local enterprise_roles = {
+    'space-explorer'
+}
+
+local _, tarantool_type = unpack(require('tarantool').package:split(' '))
+if tarantool_type == ENTERPRISE then
+    for _, role in pairs(enterprise_roles) do
+        table.insert(roles, role)
+    end
+end
+
 local ok, err = cartridge.cfg({
-    roles = {
-        'cartridge.roles.vshard-router',
-        'cartridge.roles.vshard-storage',
-        'extensions',
-        'cartridge.roles.crud-router',
-        'cartridge.roles.crud-storage',
-        'space-explorer',
-    },
+    roles = roles,
     cluster_cookie = 'try-cartridge-cluster-cookie'
 })
 
