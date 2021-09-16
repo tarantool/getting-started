@@ -37,7 +37,7 @@ local httpd = cartridge.service_get('httpd')
 local cartridge_before_dispatch = httpd.hooks.before_dispatch
 
 local function before_dispatch(httpd, req)
-    if cartridge_before_dispatch ~= nil then
+    if cartridge_before_dispatch ~= nil and not string.find(req.path, '/last_used') then
         local ok, err = cartridge_before_dispatch(httpd, req)
         if err then
             return nil, err
