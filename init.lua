@@ -62,6 +62,15 @@ local function before_dispatch(httpd, req)
     end
 end
 
+local cartridge_after_dispatch = httpd.hooks.after_dispatch
+
+local function after_dispatch(req, resp)
+    if cartridge_after_dispatch ~= nil then
+        cartridge_after_dispatch(req, resp)
+    end
+    resp.headers['Set-Cookie']= ('token=%s;path=/;expires=+7d;HttpOnly'):format(req:cookie('token'))
+end
+
 httpd:route(
     { path = '/last_used', public = true },
     function()
@@ -73,5 +82,6 @@ httpd:route(
 )
 
 httpd:hook('before_dispatch', before_dispatch)
+httpd:hook('after_dispatch', after_dispatch)
 
 assert(ok, tostring(err))
