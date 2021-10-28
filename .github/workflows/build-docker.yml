@@ -41,7 +41,7 @@ jobs:
         submodules: recursive
         token: ${{ secrets.SUBMODULE_K8S_SDK_TOKEN }}
     - name: Docker login
-      run: docker login ${{ secrets.DOCKER_TEST_REGISTRY }} --username ${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_TEST_PASSWORD }}
+      run: docker login ${{ secrets.DOCKER_TEST_REGISTRY }} --username ${{ secrets.DOCKER_TEST_REGISTRY_USERNAME }} --password ${{ secrets.DOCKER_TEST_REGISTRY_PASSWORD }}
     - name: Tag docker image
       run: docker tag try-cartridge-backend:latest ${{ secrets.DOCKER_TEST_REGISTRY }}/try-cartridge-backend:latest
     - name: Push docker image
