@@ -28,8 +28,8 @@ jobs:
       run: docker login ${{ secrets.DOCKER_REGISTRY }} --username ${{ secrets.DOCKER_REGISTRY_USERNAME }} --password ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
     - name: Tag docker image
       run: |
-        docker tag cartridge-app:${{ env.RELEASE_VERSION }} ${{ secrets.DOCKER_REGISTRY }}/cartridge-app:${{ env.RELEASE_VERSION }}-0 &&
-        docker tag cartridge-app:latest ${{ secrets.DOCKER_REGISTRY }}/cartridge-app:latest
+        docker tag cartridge-app:${{ env.RELEASE_VERSION }} ${{ secrets.DOCKER_REGISTRY }}/cartridge-app:${{ env.RELEASE_VERSION }}-0
+        docker tag cartridge-app:${{ env.RELEASE_VERSION }} ${{ secrets.DOCKER_REGISTRY }}/cartridge-app:latest
     - name: Push docker image
       run: |
         docker push ${{ secrets.DOCKER_REGISTRY }}/cartridge-app:${{ env.RELEASE_VERSION }}-0
