@@ -5,7 +5,7 @@
   "dependencies": {
     "@tarantool.io/frontend-core": "7.5.0",
     "@tarantool.io/lua-bundler-webpack-plugin": "^1.0.1",
-    "@tarantool.io/ui-kit": "0.34.0",
+    "@tarantool.io/ui-kit": "0.50.1",
     "autoprefixer": "7.1.6",
     "axios": "^0.18.0",
     "babel-core": "^7.0.0-bridge.0",
