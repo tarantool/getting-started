@@ -27,7 +27,7 @@ const styles = {
     }
   `,
   itemActive: css`
-    border-left-color: ${colors.intentWarningAccent};
+    border-left-color: ${colors.activeAction};
   `
 };
 

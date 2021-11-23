@@ -5,7 +5,7 @@ import { Router, Switch, Route, Redirect } from 'react-router-dom';
 import type { Location } from 'react-router';
 import {
   PageLayoutWithRef,
-  SplashErrorNetwork,
+  SplashError,
   SectionPreloader
 } from '@tarantool.io/ui-kit';
 import { detectLang, type TutorialLang } from '../fn/detectLang';
@@ -56,7 +56,7 @@ export class App extends React.Component<Props> {
 
     if (tutorialSectionsError) {
       return (
-        <SplashErrorNetwork
+        <SplashError
           title='Ошибка загрузки руководства'
           details={tutorialSectionsError}
           description={<>
