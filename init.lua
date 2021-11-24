@@ -68,7 +68,8 @@ local function after_dispatch(req, resp)
     if cartridge_after_dispatch ~= nil then
         cartridge_after_dispatch(req, resp)
     end
-    resp.headers['Set-Cookie']= ('token=%s;path=/;expires=+7d;HttpOnly'):format(req:cookie('token'))
+    resp.headers = resp.headers or {}
+    resp.headers['Set-Cookie']=('token=%s;path=/;expires=+7d;HttpOnly'):format(req:cookie('token'))
 end
 
 httpd:route(
