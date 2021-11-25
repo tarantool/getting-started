@@ -11,9 +11,9 @@ helper.cluster = cartridge_helpers.Cluster:new({
     use_vshard = false,
     replicasets = {
         {
-            alias = 'api',
+            alias = 'router',
             uuid = cartridge_helpers.uuid('a'),
-            roles = {'app.roles.custom'},
+            roles = {'crud-router', 'extensions'},
             servers = {
                 {
                     instance_uuid = cartridge_helpers.uuid('a', 1)
