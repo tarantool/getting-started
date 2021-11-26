@@ -10,6 +10,10 @@ local tutorial_bundle = require('cartridge-app.bundle')
 local clock = require('clock')
 local json = require('json')
 
+-- improve UX a bit:
+-- make tarantool/cartridge-extensions enabled by default
+require('extensions').permanent = true
+
 local ENTERPRISE = 'Enterprise'
 
 local roles = {
