@@ -3,6 +3,7 @@ local helper = require('app.libs.helper')
 local jwt = require('app.libs.jwt')
 local httpd = require('app.libs.httpd').httpd
 
+local DEFAULT_COOKIE_DOMAIN = "try.tarantool.io"
 
 local function init()
     local is_enabled = helper.read_args({ jwt_auth = 'boolean' })['jwt_auth'] or false
@@ -11,6 +12,7 @@ local function init()
     end
 
     local public_key = helper.read_args({ public_key = 'string' }, true).public_key
+    local domain = helper.read_args({ cookie_domain = 'string' }, false).cookie_domain or DEFAULT_COOKIE_DOMAIN
 
     local function before_dispatch(_, req)
         local token = req:cookie('token') --or req.headers['authorization']
@@ -24,7 +26,7 @@ local function init()
         if not payload or not payload.user_id then
             log.info(err)
             local resp = req:redirect_to('/')
-            resp.headers['Set-Cookie'] = ('token=%s;path=/;Max-Age=-1;HttpOnly'):format(token)
+            resp.headers['Set-Cookie'] = ('token=%s;path=/;Max-Age=-1;domain=%s;HttpOnly'):format(token, domain)
             --resp.headers['authorization'] = ''
             return nil, resp
         end
