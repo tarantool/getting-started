@@ -27,14 +27,6 @@ jobs:
       run: |
         cartridge pack docker --tag cartridge-app:${{ env.RELEASE_VERSION }} --sdk-path=${{ env.SDK_PATH }}
 
-  push-docker:
-    runs-on: ubuntu-latest
-    needs: build-image
-    steps:
-    - name: Checkout repository and submodules
-      uses: actions/checkout@v2
-    - name: Set env
-      run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
     - name: Docker login
       uses: docker/login-action@v1
       with:
