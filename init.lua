@@ -9,6 +9,8 @@ local analytics = require('analytics')
 local tutorial_bundle = require('cartridge-app.bundle')
 local clock = require('clock')
 local json = require('json')
+local helper = require('app.libs.helper')
+local DEFAULT_COOKIE_DOMAIN = "try.tarantool.io"
 
 -- improve UX a bit:
 -- make tarantool/cartridge-extensions enabled by default
@@ -73,7 +75,8 @@ local function after_dispatch(req, resp)
         cartridge_after_dispatch(req, resp)
     end
     resp.headers = resp.headers or {}
-    resp.headers['Set-Cookie']=('token=%s;path=/;expires=+7d;HttpOnly'):format(req:cookie('token'))
+    local domain = helper.read_args({ cookie_domain = 'string' }, false).cookie_domain or DEFAULT_COOKIE_DOMAIN
+    resp.headers['Set-Cookie']=('token=%s;path=/;expires=+7d;domain=%s;HttpOnly'):format(req:cookie('token'), domain)
 end
 
 httpd:route(
