@@ -231,15 +231,28 @@ Clients will connect to the Tarantool cluster via the HTTP protocol. The cluster
 **To configure HTTP paths, you need to write a configuration file. To do this, go to the "Code" tab. Create
 the "config.yml" file in the "extensions" directory. You created it in the last step.**
 
-```lua
-local function init(opts)
-    local httpd = cartridge.service_get('httpd')
-    httpd:route({path = '/like', method = 'POST'}, like_video)
-    httpd:route({path = '/add_user', method = 'POST'}, add_user)
-    httpd:route({path = '/add_video', method = 'POST'}, add_video)
+```yaml
+---
+ functions:
 
-    return true
-end
+   customer_add:
+     module: extensions.api
+     handler: add_user
+     events:
+     - http: {path: "/add_user", method: POST}
+
+   account_add:
+     module: extensions.api
+     handler: add_video
+     events:
+     - http: {path: "/add_video", method: POST}
+
+   transfer_money:
+     module: extensions.api
+     handler: like_video
+     events:
+     - http: {path: "/like_video", method: POST}
+...
 ```
 
 Done! Now send test queries from the console:
