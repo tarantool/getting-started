@@ -76,7 +76,7 @@ Tarantool.
 
 Вот как будет выглядеть наша схема данных:
 
-> ``` {.yaml}
+> ```yaml
 > spaces:
 >   users:
 >     engine: memtx
@@ -208,7 +208,7 @@ Tarantool.
 Вставьте код описанный ниже в этой файл и нажмите на кнопку "Apply".
 
 
-``` {.lua}
+```lua
 local cartridge = require('cartridge')
 local crud = require('crud')
 local uuid = require('uuid')
@@ -266,7 +266,7 @@ return {
 Вставьте пример конфигурации описанный ниже в этой файл и нажмите на кнопку "Apply".
 
 
-``` {.yaml}
+```yaml
 ---
  functions:
 
@@ -292,13 +292,13 @@ return {
 
 Готово! Сделаем тестовые запросы из консоли:
 
-``` {.bash}
+```bash
 curl -X POST --data "fullname=Taran Tool" <ip:port>/add_user
 ```
 
 Создали пользователя и получили его UUID. Запомним его.
 
-``` {.bash}
+```bash
 curl -X POST --data "description=My first tiktok" <ip:port>/add_video
 ```
 
@@ -308,7 +308,7 @@ curl -X POST --data "description=My first tiktok" <ip:port>/add_video
 Для того чтобы \"лайкнуть\" видео, нужно указать UUID пользователя и
 UUID видео. Подставим его из первых двух шагов за место троточия ниже.
 
-``` {.bash}
+```bash
 curl -X POST --data "video_id=...&user_id=..." <ip:port>/like_video
 ```
 
