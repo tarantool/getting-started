@@ -168,7 +168,7 @@ Plug the CRUD module and declare three procedures:
 - liking a video
 
 **The procedures must be described in a special file. To do this, go to the "Code" tab. Create
-a new directory called "extensions". And in this directory create the file "api.yml".**
+a new directory called "extensions". And in this directory create the file "api.lua".**
 
 Paste the code described below into this file and click on the "Apply" button.
 
