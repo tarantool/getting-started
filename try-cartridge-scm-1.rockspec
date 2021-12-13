@@ -11,7 +11,7 @@ dependencies = {
     'cartridge == 2.7.3-1',
     'analytics == scm-1',
     'cartridge-extensions == scm-1',
-    'crud == 0.8.0'
+    'crud == 0.10.0'
 }
 
 build = {
