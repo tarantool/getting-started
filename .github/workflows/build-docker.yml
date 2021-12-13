@@ -5,7 +5,8 @@ on:
       - '*.*.*'
 
 jobs:
-  build-image:
+  build-prod-image:
+    name: Build try.tarantool.io image
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository and submodules
@@ -41,3 +42,45 @@ jobs:
       run: |
         docker push ${{ secrets.DOCKER_REGISTRY }}/cartridge-app:${{ env.RELEASE_VERSION }}-0
         docker push ${{ secrets.DOCKER_REGISTRY }}/cartridge-app:latest
+
+  build-public-image:
+    name: Build public tarantool/getting-started image
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository and submodules
+      uses: actions/checkout@v2
+
+    - name: Set env
+      run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+
+    - name: Set up the Tarantool packages repository
+      run: curl -L https://tarantool.io/installer.sh | sudo -E bash -s -- --repo-only
+
+    - name: Install tarantool
+      run: |
+        sudo apt install tarantool
+
+    - name: Install cartridge-cli
+      run: |
+        sudo apt install cartridge-cli
+
+    - name: pack docker image
+      run: |
+        cartridge pack docker --tag cartridge-app:${{ env.RELEASE_VERSION }}
+
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v1
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Tag docker image
+      run: |
+        docker tag cartridge-app:${{ env.RELEASE_VERSION }} ghcr.io/tarantool/getting-started:${{ env.RELEASE_VERSION }}
+        docker tag cartridge-app:${{ env.RELEASE_VERSION }} ghcr.io/tarantool/getting-started:latest
+
+    - name: Push docker image
+      run: |
+        docker push ghcr.io/tarantool/getting-started:${{ env.RELEASE_VERSION }}
+        docker push ghcr.io/tarantool/getting-started:latest
