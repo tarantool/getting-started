@@ -1,1 +1,4 @@
 FROM centos:8
+
+RUN curl -L https://tarantool.io/installer.sh | bash -s -- --repo-only
+RUN yum install -y cartridge-cli

@@ -54,7 +54,7 @@ jobs:
       run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
 
     - name: Set up the Tarantool packages repository
-      run: curl -L https://tarantool.io/installer.sh | sudo -E bash -s -- --repo-only
+      run: curl -f -L https://tarantool.io/installer.sh | sudo -E bash -s -- --repo-only
 
     - name: Install tarantool
       run: |
@@ -68,19 +68,16 @@ jobs:
       run: |
         cartridge pack docker --tag cartridge-app:${{ env.RELEASE_VERSION }}
 
+    - name: Build resulting docker image
+      run: |
+        docker build -t tarantool/getting-started:latest --build-arg FROM_IMG=cartridge-app:${{ env.RELEASE_VERSION }} .
+
     - name: Login to GitHub Container Registry
       uses: docker/login-action@v1
       with:
-        registry: ghcr.io
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Tag docker image
-      run: |
-        docker tag cartridge-app:${{ env.RELEASE_VERSION }} ghcr.io/tarantool/getting-started:${{ env.RELEASE_VERSION }}
-        docker tag cartridge-app:${{ env.RELEASE_VERSION }} ghcr.io/tarantool/getting-started:latest
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DOCKER_HUB_TOKEN }}
 
     - name: Push docker image
       run: |
-        docker push ghcr.io/tarantool/getting-started:${{ env.RELEASE_VERSION }}
-        docker push ghcr.io/tarantool/getting-started:latest
+        docker push tarantool/getting-started:latest
