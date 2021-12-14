@@ -73,6 +73,9 @@ g.before_all = function()
             function M.echo(req)
                 return {status = 200, body = req:param('msg')}
             end
+            function M.any(req)
+                return {status = 200, body = 'any'}
+            end
             return M
         ]],
     }, {
@@ -83,6 +86,11 @@ g.before_all = function()
                     module = 'extensions.main',
                     handler = 'echo',
                     events = {{http = {path = '/echo', method = 'get'}}}
+                },
+                say_any = {
+                    module = 'extensions.main',
+                    handler = 'any',
+                    events = {{http = {path = '/any', method = 'any'}}}
                 }
             }
         })
@@ -105,6 +113,19 @@ g.test_ignore_jwt_auth_for_ext_routes_success = function ()
     t.assert_equals(response.status, 200)
     t.assert_equals(response.body, 'hello')
 end
+
+g.test_ignore_jwt_auth_for_ext_routes_with_any_method = function ()
+    local server = cluster.main_server
+    local response = server:http_request('get', '/any', {
+        raise = false,
+        http = {
+            follow_location = false
+        }
+    })
+    t.assert_equals(response.status, 200)
+    t.assert_equals(response.body, 'any')
+end
+
 
 g.test_ignore_jwt_auth_for_ext_routes_fail = function ()
     local server = cluster.main_server

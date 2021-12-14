@@ -7,6 +7,7 @@ local httpd = require('app.libs.httpd').httpd
 
 local EXT_CONFIG_NAME = "extensions/config.yml"
 local DEFAULT_COOKIE_DOMAIN = "try.tarantool.io"
+local ANY_METHOD = "any"
 
 
 local function is_ignore_auth(method, path)
@@ -18,7 +19,8 @@ local function is_ignore_auth(method, path)
                 for _, event in pairs(f['events']) do
                     if event.http and
                         event.http.path:lower() == path:lower() and
-                        event.http.method:lower() ==  method:lower() then
+                        (event.http.method:lower() == method:lower() or
+                        event.http.method:lower() == ANY_METHOD) then
                             return true
                     end
                 end
