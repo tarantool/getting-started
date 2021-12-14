@@ -15,6 +15,8 @@ t.before_suite(function()
     fio.mktree(helper.datadir)
 end)
 
+local jwt = "eyJhbGciOiJSUzI1NiIsInR5cCI6Imp3dCJ9.eyJ1c2VyX2lkIjoiMzY3YzBkNmQtNGJlOC00ZjA1LTlmZjMtNmY4MmZkYmYxM2ViIn0=.CasldudGMyXGuYNp98qjOFMLAVoBfjVgbm0Kx9qyYgJIDdnQ9loAJA71hFIGkFSVFlDHH7X+Dmi+gAWLwzwdbA=="
+
 function helper.set_sections(srv, sections)
     return srv:graphql({
         query = [[
@@ -25,6 +27,10 @@ function helper.set_sections(srv, sections)
             }
         ]],
         variables = {sections = sections},
+    }, {
+        http = {
+            headers = {cookie = ('token=%s'):format(jwt)}
+        }
     })
 end
 
