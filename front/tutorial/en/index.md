@@ -2,7 +2,9 @@
 
 Today you are going to solve a high-performance challenge for TikTok with Tarantool.
 
-You will implement a counter of likes for videos. First, you will create base tables and search indexes. Then you will define the HTTP API for mobile clients. And most importantly, you will make sure that the counter doesn't lose likes under high load.
+You will implement a counter of likes for videos. First, you will create base tables and search indexes. Then you will define the HTTP API for mobile clients.
+
+You don't need to write additional code. Everything will be implemented on the Tarantool platform.
 
 If you accidentally do something wrong while following the instructions, there is a magic button that helps you reset all the changes.
 
@@ -45,7 +47,9 @@ It is located on the top right.
 
 ## Creating a Data Schema [2 minutes]
 
-Get started with a data schema – go to the Schema tab on the left. On this tab, you can create a new data schema for the entire cluster, edit the current schema, validate its correctness and apply it to the whole cluster.
+Get started with a data schema – go to the Code tab on the left.
+
+On this tab, you can create a new file called `schema.yml`. In that file you can describe the data schema for the entire cluster, edit the current schema, validate its correctness and apply it to the whole cluster.
 
 Create the necessary tables. In Tarantool, they are called spaces.
 
@@ -60,73 +64,70 @@ schema to this file. Click on the "Apply" button. After that, the data schema wi
 
 The data schema will look like this:
 
-- [expand] Tiktok DDL
-
-    ```yaml
-    spaces:
-      users:
-        engine: memtx
-        is_local: false
-        temporary: false
-        sharding_key: 
-        - "user_id"
-        format:
-        - {name: bucket_id, type: unsigned, is_nullable: false}
-        - {name: user_id, type: uuid, is_nullable: false}
-        - {name: fullname, type: string,  is_nullable: false}
-        indexes:
-        - name: user_id
-          unique: true
-          parts: [{path: user_id, type: uuid, is_nullable: false}]
-          type: HASH
-        - name: bucket_id
-          unique: false
-          parts: [{path: bucket_id, type: unsigned, is_nullable: false}]
-          type: TREE
-
-      videos:
-        engine: memtx
-        is_local: false
-        temporary: false
-        sharding_key: 
-        - "video_id"
-        format:
-        - {name: bucket_id, type: unsigned, is_nullable: false}
-        - {name: video_id, type: uuid, is_nullable: false}
-        - {name: description, type: string, is_nullable: true}
-        - {name: likes, type: unsigned, is_nullable: false}
-        indexes:
-        - name: video_id
-          unique: true
-          parts: [{path: video_id, type: uuid, is_nullable: false}]
-          type: HASH
-        - name: bucket_id
-          unique: false
-          parts: [{path: bucket_id, type: unsigned, is_nullable: false}]
-          type: TREE
-
-      likes:
-        engine: memtx
-        is_local: false
-        temporary: false
-        sharding_key: 
-        - "video_id"
-        format:
-        - {name: bucket_id, type: unsigned, is_nullable: false}
-        - {name: like_id, type: uuid, is_nullable: false }
-        - {name: user_id,  type: uuid, is_nullable: false}
-        - {name: video_id, type: uuid, is_nullable: false}
-        - {name: timestamp, type: string,   is_nullable: true}
-        indexes:
-        - name: like_id
-          unique: true
-          parts: [{path: like_id, type: uuid, is_nullable: false}]
-          type: HASH
-        - name: bucket_id
-          unique: false
-          parts: [{path: bucket_id, type: unsigned, is_nullable: false}]
-          type: TREE
-    ```
+> ```yaml
+> spaces:
+>   users:
+>     engine: memtx
+>     is_local: false
+>     temporary: false
+>     sharding_key:
+>     - "user_id"
+>     format:
+>     - {name: bucket_id, type: unsigned, is_nullable: false}
+>     - {name: user_id, type: uuid, is_nullable: false}
+>     - {name: fullname, type: string,  is_nullable: false}
+>     indexes:
+>     - name: user_id
+>       unique: true
+>       parts: [{path: user_id, type: uuid, is_nullable: false}]
+>       type: HASH
+>     - name: bucket_id
+>       unique: false
+>       parts: [{path: bucket_id, type: unsigned, is_nullable: false}]
+>       type: TREE
+>
+>   videos:
+>     engine: memtx
+>     is_local: false
+>     temporary: false
+>     sharding_key:
+>     - "video_id"
+>     format:
+>     - {name: bucket_id, type: unsigned, is_nullable: false}
+>     - {name: video_id, type: uuid, is_nullable: false}
+>     - {name: description, type: string, is_nullable: true}
+>     indexes:
+>     - name: video_id
+>       unique: true
+>       parts: [{path: video_id, type: uuid, is_nullable: false}]
+>       type: HASH
+>     - name: bucket_id
+>       unique: false
+>       parts: [{path: bucket_id, type: unsigned, is_nullable: false}]
+>       type: TREE
+>
+>   likes:
+>     engine: memtx
+>     is_local: false
+>     temporary: false
+>     sharding_key:
+>     - "video_id"
+>     format:
+>     - {name: bucket_id, type: unsigned, is_nullable: false}
+>     - {name: like_id, type: uuid, is_nullable: false }
+>     - {name: user_id,  type: uuid, is_nullable: false}
+>     - {name: video_id, type: uuid, is_nullable: false}
+>     - {name: timestamp, type: string,   is_nullable: true}
+>     indexes:
+>     - name: like_id
+>       unique: true
+>       parts: [{path: like_id, type: uuid, is_nullable: false}]
+>       type: HASH
+>     - name: bucket_id
+>       unique: false
+>       parts: [{path: bucket_id, type: unsigned, is_nullable: false}]
+>       type: TREE
+> ```
 
 It's simple. Let's take a closer look at the essential points.
 
@@ -145,7 +146,10 @@ There are two of them for each space:
 
 **Important:** The name `bucket_id` is reserved. If you choose a different name, sharding will not work for that space. If you don't use sharding in the project, you can remove the second index.
 
-Tarantool uses `sharding_key` to figure out which field to use for sharding. <0>sharding_key</0> refers to the field in the space that is used for sharding. Tarantool takes the hash from this field during insertion, calculates the bucket number, and selects the right storage for writing data.
+To understand which field to shard data by, Tarantool uses
+`sharding_key`. `sharding_key` points to the field in the space by which
+records will be sharded. Tarantool will take a hash from this field when
+insert, will calculate the bucket number and select the required Storage for recording.
 
 Buckets may be repeated, and each storage stores a certain range of buckets.
 
@@ -216,13 +220,13 @@ function like_video(request)
 
     return { body = json.encode({status = "Success!", result = result}), status = 200 }
 end
+
+return {
+    add_user = add_user,
+    add_video = add_video,
+    like_video = like_video,
+}
 ```
-
-Note that there can be several routers in the cluster, and requests for likes of the same video can come to the storage at the same time.
-
-Since the `update` operation in Tarantool ensures that no data is lost during the update, you don't have to worry about multiple clients connecting at the same time.
-
-For simplicity, `update` and `insert_object` operations in the `like_video` method are not in a transaction. To learn how transactions work, read the [Transactions section of Tarantool documentation](https://www.tarantool.io/en/doc/latest/book/box/atomic/).
 
 ## Setting up HTTP API [2 minutes]
 
@@ -258,9 +262,9 @@ the "config.yml" file in the "extensions" directory. You created it in the last 
 Done! Now send test queries from the console:
 
 ```bash
-curl -X POST --data "fullname=Taran Tool" try-cartridge.tarantool.io:19528/add_user
-curl -X POST --data "description=My first tiktok" try-cartridge.tarantool.io:19528/add_video
-curl -X POST --data "video_id=ab45321d-8f79-49ec-a921-c2896c4a3eba,user_id=bb45321d-9f79-49ec-a921-c2896c4a3eba" try-cartridge.tarantool.io:19528/like_video
+curl -X POST --data "fullname=Taran Tool" <ip:port>/add_user
+curl -X POST --data "description=My first tiktok" <ip:port>/add_video
+curl -X POST --data "video_id=ab45321d-8f79-49ec-a921-c2896c4a3eba,user_id=bb45321d-9f79-49ec-a921-c2896c4a3eba" <ip:port>/like_video
 ```
 
 It goes something like this:
