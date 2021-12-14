@@ -292,8 +292,6 @@ Read [more in the documentation](https://www.tarantool.io/en/doc/latest/referenc
 
 Create a second shard. Go to the Cluster tab, select `s2-master`, and click Configure. Select the roles as shown in the picture:
 
-![Space Explorer, host s1-master](images/s1-master.png)
-
 ![Space Explorer, configuring new shard](images/configuring-server.png)
 
 Click on the roles and create a shard (replicaset).
@@ -307,6 +305,8 @@ Now you have two shards, or two logical nodes that receive data. The router dete
 To enable a new shard, you have to set its weight to one. Go back to the Cluster tab, open the `s2-master` settings, set Replica set weight to "1" and apply.
 
 Something has already happened. Go to space-explorer and open the `s2-master` node. It turns out that some of the data from the first shard has already migrated here! The scaling is done automatically.
+
+![Cluster, s2-master viewing](images/scaling.png)
 
 Now try to add more data to the cluster using the HTTP API. You can check and make sure that the new data is also evenly distributed among the two shards.
 
@@ -365,7 +365,13 @@ Done! You can see the Tarantool Cartridge UI at [http://localhost:8081](http://l
 
 #### For Windows users
 
-Use a Docker container with СentOS 8 or WSL and follow the Linux installation instructions.
+Use Docker:
+
+```bash
+docker run -p 3301: 3301 -p 8081: 8081 ghcr.io/tarantool/getting-started
+```
+
+Ready! At http://localhost:8081 you will see the Tarantool UI.
 
 ## See also
 

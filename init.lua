@@ -12,10 +12,6 @@ local json = require('json')
 local helper = require('app.libs.helper')
 local DEFAULT_COOKIE_DOMAIN = "try.tarantool.io"
 
--- improve UX a bit:
--- make tarantool/cartridge-extensions enabled by default
-require('extensions').permanent = true
-
 local ENTERPRISE = 'Enterprise'
 
 local roles = {

@@ -24,12 +24,6 @@ g.test_sample = function()
     t.assert_equals(server.net_box:eval('return box.cfg.memtx_dir'), server.workdir)
 end
 
-g.test_extensions_role_enabled_by_default = function()
-    local server = cluster.main_server
-    local roles = server.net_box:eval("return require('cartridge.roles').get_enabled_roles()")
-    t.assert_covers(roles, {['extensions'] = true})
-end
-
 g.test_extensions = function()
     local server = cluster.main_server
     h.set_sections(server, {{

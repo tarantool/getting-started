@@ -13,7 +13,7 @@ helper.cluster = cartridge_helpers.Cluster:new({
         {
             alias = 'router',
             uuid = cartridge_helpers.uuid('a'),
-            roles = {'crud-router'},
+            roles = {'crud-router', 'extensions'},
             servers = {
                 {
                     instance_uuid = cartridge_helpers.uuid('a', 1)
