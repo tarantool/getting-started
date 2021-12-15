@@ -41,8 +41,13 @@ It will look something like this:
 
 ![Cluster view after first configuration](images/first-configuration-result.png)
 
+
+## Turn on sharding [1 minute]
+
 Let's enable sharding in the cluster using the "Bootstrap vshard" button.
-It is located on the top right.
+It is located in the "Cluster" tab at the top right.
+
+More details about sharding will be discussed in the next steps.
 
 
 ## Creating a Data Schema [2 minutes]
@@ -259,12 +264,16 @@ the "config.yml" file in the "extensions" directory. You created it in the last 
 ...
 ```
 
-Done! Now send test queries from the console:
+Done! Now send test queries from the console.
+Please note: instead of **url**, you must substitute your URL from
+query strings up to the first slash. The protocol must be strictly HTTP.
+
+For example: http://artpjcvnmwctc4qppejgf57.try.tarantool.io.
 
 ```bash
-curl -X POST --data "fullname=Taran Tool" <ip:port>/add_user
-curl -X POST --data "description=My first tiktok" <ip:port>/add_video
-curl -X POST --data "video_id=ab45321d-8f79-49ec-a921-c2896c4a3eba,user_id=bb45321d-9f79-49ec-a921-c2896c4a3eba" <ip:port>/like_video
+curl -X POST --data "fullname=Taran Tool" url/add_user
+curl -X POST --data "description=My first tiktok" url/add_video
+curl -X POST --data "video_id=ab45321d-8f79-49ec-a921-c2896c4a3eba,user_id=bb45321d-9f79-49ec-a921-c2896c4a3eba" url/like_video
 ```
 
 It goes something like this:
@@ -295,8 +304,6 @@ Create a second shard. Go to the Cluster tab, select `s2-master`, and click Conf
 ![Space Explorer, configuring new shard](images/configuring-server.png)
 
 Click on the roles and create a shard (replicaset).
-
-Add the `s1-replica` and `s2-replica` nodes as replicas to the first and the second shard respectively.
 
 ## Checking Sharding [1 minute]
 
