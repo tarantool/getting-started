@@ -368,7 +368,7 @@ Done! You can see the Tarantool Cartridge UI at [http://localhost:8081](http://l
 Use Docker:
 
 ```bash
-docker run -p 3301: 3301 -p 8081: 8081 ghcr.io/tarantool/getting-started
+docker run -p 3301:3301 -p 8081:8081 tarantool/getting-started
 ```
 
 Ready! At http://localhost:8081 you will see the Tarantool UI.

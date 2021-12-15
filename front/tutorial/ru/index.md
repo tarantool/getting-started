@@ -438,7 +438,7 @@ Cartridge.
 Используйте Docker:
 
 ```bash
-docker run -p 3301: 3301 -p 8081: 8081 ghcr.io/tarantool/getting-started
+docker run -p 3301:3301 -p 8081:8081 tarantool/getting-started
 ```
 
 Готово! На странице браузера http://localhost:8081 вы сможете увидеть UI Tarantool'а.
