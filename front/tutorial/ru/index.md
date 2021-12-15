@@ -22,8 +22,8 @@ Tarantool.
 
 В кластере Tarantool есть две служебные роли: router, storage.
 
--   Storage --- это хранилище данных
--   Router --- это посредник между клиентами и Storage. Он принимает
+-   Storage — это хранилище данных
+-   Router — это посредник между клиентами и Storage. Он принимает
     запросы от клиентов, ходит к нужным Storage за данными и возвращает
     их клиенту.
 
@@ -48,8 +48,13 @@ Tarantool.
 
 ![Вид кластера после первой настройки](images/first-configuration-result.png)
 
+
+## Включим шардирование [1 минута]
+
 Включим шардирование в кластере с помощью кнопки "Bootstrap vshard".
-Она находится справа сверху.
+Она находится во вкладке "Cluster" справа сверху.
+
+Подробнее про шардирование будет рассказано в следующих шагах.
 
 
 ## Создаем схему данных [2 минуты]
@@ -290,16 +295,20 @@ return {
 ...
 ```
 
-Готово! Сделаем тестовые запросы из консоли:
+Готово! Сделаем тестовые запросы из консоли.
+Обратите внимание: вместо **url** необходимо подставить ваш URL из
+строки запроса до первого слеша. Протокол должен быть строго HTTP.
+
+Например: http://artpjcvnmwctc4qppejgf57.try.tarantool.io.
 
 ```bash
-curl -X POST --data "fullname=Taran Tool" <ip:port>/add_user
+curl -X POST --data "fullname=Taran Tool" url/add_user
 ```
 
 Создали пользователя и получили его UUID. Запомним его.
 
 ```bash
-curl -X POST --data "description=My first tiktok" <ip:port>/add_video
+curl -X POST --data "description=My first tiktok" url/add_video
 ```
 
 Представим что пользователь добавил свое первое видео с описанием. Также
@@ -309,7 +318,7 @@ curl -X POST --data "description=My first tiktok" <ip:port>/add_video
 UUID видео. Подставим его из первых двух шагов за место троточия ниже.
 
 ```bash
-curl -X POST --data "video_id=...&user_id=..." <ip:port>/like_video
+curl -X POST --data "video_id=...&user_id=..." url/like_video
 ```
 
 Получится, примерно вот так:
@@ -357,9 +366,6 @@ Storage получить необходимую информацию.
 ![Cluster, экран конфигурации нового шарда](images/configuring-server.png)
 
 Шелкаем на нужные роли и создаем шард (репликасет).
-
-Узлы `s1-replica`, `s2-replica` добавляем как реплики к первому и
-второму шарду соответственно.
 
 ## Смотрим, как работает шардирование [1 минута]
 
