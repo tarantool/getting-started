@@ -348,7 +348,7 @@ brew install cartridge-cli
 
 Learn more about installing the `cartridge-cli` utility [here](https://github.com/tarantool/cartridge-cli).
 
--   Clone the repository [https://github.com/tarantool/try-tarantool-example](https://github.com/tarantool/try-tarantool-example).
+-   Clone the repository [https://github.com/tarantool/getting-started](https://github.com/tarantool/getting-started).
 
     This repository is ready for use.
 
