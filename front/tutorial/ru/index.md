@@ -416,8 +416,7 @@ brew install cartridge-cli
 Подробнее про установку утилиты `cartridge-cli` читайте
 [тут](https://github.com/tarantool/cartridge-cli).
 
--   склонируйте репозиторий
-    [https://github.com/tarantool/getting-started](https://github.com/tarantool/getting-started)
+- склонируйте репозиторий [https://github.com/tarantool/getting-started](https://github.com/tarantool/getting-started)
 
 В данном репозитории все готово к работе - в папке со склонированным
 примером выполните:
