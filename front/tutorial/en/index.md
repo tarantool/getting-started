@@ -273,7 +273,7 @@ For example: http://artpjcvnmwctc4qppejgf57.try.tarantool.io.
 ```bash
 curl -X POST --data "fullname=Taran Tool" url/add_user
 curl -X POST --data "description=My first tiktok" url/add_video
-curl -X POST --data "video_id=ab45321d-8f79-49ec-a921-c2896c4a3eba,user_id=bb45321d-9f79-49ec-a921-c2896c4a3eba" url/like_video
+curl -X POST --data "video_id=ab45321d-8f79-49ec-a921-c2896c4a3eba&user_id=bb45321d-9f79-49ec-a921-c2896c4a3eba" url/like_video
 ```
 
 It goes something like this:
