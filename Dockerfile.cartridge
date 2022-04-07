@@ -1,4 +1,6 @@
 FROM centos:8
 
+RUN sed -i -e "s|mirrorlist=|#mirrorlist=|g" /etc/yum.repos.d/CentOS-* && sed -i -e "s|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g" /etc/yum.repos.d/CentOS-*
+
 RUN curl -L https://tarantool.io/installer.sh | bash -s -- --repo-only
 RUN yum install -y cartridge-cli
