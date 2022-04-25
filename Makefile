@@ -4,7 +4,6 @@ all: $(shell find front/src -type f) front/node_modules
 	npm run build --prefix front
 
 front/node_modules: front/package.json
-	npm install --prefix front
 	npm ci --prefix front
 	@ touch $@
 

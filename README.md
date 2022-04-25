@@ -14,5 +14,5 @@
   cartridge start
   ```
 
-- Visit [localhost:8081](localhost:8081) in your browser and
+- Visit [localhost:8081/admin/tutorial](http://localhost:8081/admin/tutorial) in your browser and
   check out the tutorial to get started with Tarantool
