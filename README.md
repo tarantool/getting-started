@@ -4,6 +4,10 @@
 
   https://github.com/tarantool/cartridge-cli#installation
 
+- Install [npm](https://www.npmjs.com)
+
+  https://nodejs.org/en/download/
+
 - Build cartridge app
   ```bash
   cartridge build
