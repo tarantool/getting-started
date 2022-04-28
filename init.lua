@@ -88,4 +88,8 @@ httpd:route(
 httpd:hook('before_dispatch', before_dispatch)
 httpd:hook('after_dispatch', after_dispatch)
 
+if os.getenv('CARTRIDGE_DIR') ~= nil then
+    httpd.options.app_dir = os.getenv('CARTRIDGE_DIR')
+end
+
 assert(ok, tostring(err))
